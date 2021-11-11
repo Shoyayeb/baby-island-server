@@ -3,7 +3,6 @@ const cors = require("cors");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const ObjectId = require("mongodb").ObjectId;
-const email = require("mongodb").email;
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -20,7 +19,7 @@ async function run() {
     try {
         await client.connect();
         const database = client.db("products");
-        const productsCollection = database.collection("products");
+        const productsCollection = database.collection("product");
 
         app.post("/addnew", async (req, res) => {
             const plan = req.body;
@@ -37,7 +36,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-    res.send("Server running on", port);
+    res.send("Server running");
 });
 
 app.listen(port, () => {
