@@ -21,6 +21,12 @@ async function run() {
         const database = client.db("products");
         const productsCollection = database.collection("product");
 
+        // GET API ---all plan
+        app.get("/all", async (req, res) => {
+            const cursor = productsCollection.find({});
+            const products = await cursor.toArray();
+            res.send(products);
+        });
         app.post("/addnew", async (req, res) => {
             const plan = req.body;
             console.log(plan);
