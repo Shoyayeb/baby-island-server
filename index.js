@@ -22,24 +22,30 @@ async function run() {
         const productsCollection = database.collection("products");
         const ordersCollection = database.collection("orders");
 
-        // GET API
+        // GET API -for all products
         app.get("/all", async (req, res) => {
             const cursor = productsCollection.find({});
             const products = await cursor.toArray();
             res.send(products);
         });
-        // for products on homepage
+        // GET API -for ordered products
+        app.get("/allorders", async (req, res) => {
+            const cursor = ordersCollection.find({});
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
+        // GET API -for products on homepage
         app.get("/homeproduct", async (req, res) => {
             const cursor = productsCollection.find({}).limit(6);
             const products = await cursor.toArray();
             res.send(products);
         });
-        // for product on buy page
+        // GET API -for product on buy page
         app.get("/buy/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const toy = await productsCollection.findOne(query);
-            res.json(toy);
+            const product = await productsCollection.findOne(query);
+            res.json(product);
         });
         // POST API -order
         app.post("/order", async (req, res) => {
