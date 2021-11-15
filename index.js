@@ -15,12 +15,12 @@ const client = new MongoClient(uri, {
     useUnifiedTopology: true,
 });
 
-
 async function run() {
     try {
         await client.connect();
         const database = client.db("babyIsland");
         const productsCollection = database.collection("products");
+        const ordersCollection = database.collection("orders");
 
         // GET API
         app.get("/all", async (req, res) => {
@@ -41,7 +41,13 @@ async function run() {
             const toy = await productsCollection.findOne(query);
             res.json(toy);
         });
-        // POST API
+        // POST API -order
+        app.post("/order", async (req, res) => {
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order);
+            res.json(result);
+        });
+        // POST API -add new product
         app.post("/addnew", async (req, res) => {
             const product = req.body;
             console.log(product);
