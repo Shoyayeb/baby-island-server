@@ -22,18 +22,26 @@ async function run() {
         const database = client.db("babyIsland");
         const productsCollection = database.collection("products");
 
-        // GET API ---all plan
+        // GET API
         app.get("/all", async (req, res) => {
             const cursor = productsCollection.find({});
             const products = await cursor.toArray();
             res.send(products);
         });
-
+        // for products on homepage
         app.get("/homeproduct", async (req, res) => {
             const cursor = productsCollection.find({}).limit(6);
             const products = await cursor.toArray();
             res.send(products);
         });
+        // for product on buy page
+        app.get("/buy/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const toy = await productsCollection.findOne(query);
+            res.json(toy);
+        });
+        // POST API
         app.post("/addnew", async (req, res) => {
             const product = req.body;
             console.log(product);
