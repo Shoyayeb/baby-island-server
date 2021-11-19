@@ -3,7 +3,6 @@ const cors = require("cors");
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const ObjectId = require("mongodb").ObjectId;
-const userEmail = require("mongodb").userEmail;
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(cors());
@@ -59,7 +58,6 @@ async function run() {
         // POST API -order
         app.post("/order", async (req, res) => {
             const order = req.body;
-            console.log(order);
             const result = await ordersCollection.insertOne(order);
             res.json(result);
         });
