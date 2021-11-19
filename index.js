@@ -21,6 +21,7 @@ async function run() {
         const database = client.db("babyIsland");
         const productsCollection = database.collection("products");
         const ordersCollection = database.collection("orders");
+        const reviewCollection = database.collection("review");
 
         // GET API -for all products
         app.get("/all", async (req, res) => {
@@ -28,6 +29,7 @@ async function run() {
             const products = await cursor.toArray();
             res.send(products);
         });
+
         // GET API -for ordered products
         app.get("/allorders", async (req, res) => {
             const cursor = ordersCollection.find({});
@@ -55,10 +57,22 @@ async function run() {
             const products = await cursor.toArray();
             res.json(products);
         });
+        // GET API -for reviews
+        app.get("/reviews", async (req, res) => {
+            const cursor = reviewCollection.find({});
+            const reviews = await cursor.toArray();
+            res.send(reviews);
+        });
         // POST API -order
         app.post("/order", async (req, res) => {
             const order = req.body;
             const result = await ordersCollection.insertOne(order);
+            res.json(result);
+        });
+        // POST API -add review
+        app.post("/addreview", async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
             res.json(result);
         });
         // POST API -add new product
