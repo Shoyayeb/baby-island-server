@@ -41,7 +41,7 @@ async function run() {
             const products = await cursor.toArray();
             res.send(products);
         });
-        // GET API -for product on buy page
+        // GET API -for one product
         app.get("/buy/:id", async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
@@ -71,6 +71,13 @@ async function run() {
             console.log(result);
             res.json(result);
         });
+        // DELETE API
+        app.delete('/order/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await ordersCollection.deleteOne(query);
+            res.json(result);
+        })
     } finally {
         // await client.close();
     }
